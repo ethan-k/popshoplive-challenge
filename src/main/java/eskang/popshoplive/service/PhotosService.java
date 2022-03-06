@@ -50,7 +50,7 @@ public class PhotosService {
                 throw new PhotoFileException("Failed to save a empty file.");
             }
             String originalFilename = photoFile.getOriginalFilename().toLowerCase();
-            String thumbNameFileName = "thumbnail-" + photoFile.getOriginalFilename();
+            String thumbNameFileName = "thumbnail-" + originalFilename;
             if (!originalFilename.matches(IMAGE_FiLE_EXTENSION_PATTERN)) {
                 throw new PhotoFileException("Given a file is not a image file");
             }
