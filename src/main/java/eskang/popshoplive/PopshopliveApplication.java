@@ -23,7 +23,7 @@ public class PopshopliveApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		File file = new File(popshopConfiguration.getFileUploadFolderPath() + "/" + popshopConfiguration.getFileUploadFolderName());
+		File file = new File(popshopConfiguration.getFileUploadFolderPath());
 		file.mkdirs();
 	}
 }

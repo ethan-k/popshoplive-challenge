@@ -3,6 +3,8 @@ package eskang.popshoplive.controller;
 import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.service.PhotosService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,5 +49,11 @@ public class PhotosController {
     @ResponseBody
     public HttpResponseDTO<PhotoItemDTO> getImageInfo(@PathVariable String uuid) {
         return new HttpResponseDTO<>(photosService.getPhoto(uuid));
+    }
+
+    @DeleteMapping("/photos/{uuid}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteImage(@PathVariable String uuid) {
+        photosService.deletePhoto(uuid);
     }
 }

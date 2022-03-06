@@ -20,4 +20,9 @@ public class Photo {
     private String description;
     private String thumbnailUrl;
     private String fullPictureUrl;
+    private String originalFileName;
+
+    public String getThumbnailFileName() {
+        return "thumbnail-" + originalFileName;
+    }
 }

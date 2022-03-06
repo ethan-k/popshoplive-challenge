@@ -31,4 +31,10 @@ public class JPAPhotosRepository implements PhotoRepository {
     public Photo getPhotoByUuid(String uuid) {
         return this.springDataPhotoRepository.findByUuid(UUID.fromString(uuid));
     }
+
+    @Override
+    public void deleteByUuid(String uuid) {
+        Photo photo = springDataPhotoRepository.findByUuid(UUID.fromString(uuid));
+        springDataPhotoRepository.delete(photo);
+    }
 }

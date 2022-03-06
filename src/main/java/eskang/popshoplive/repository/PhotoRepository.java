@@ -8,4 +8,5 @@ public interface PhotoRepository {
     List<Photo> getPhotos();
     Photo save(Photo photo);
     Photo getPhotoByUuid(String uuid);
+    void deleteByUuid(String uuid);
 }

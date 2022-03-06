@@ -62,8 +62,8 @@ class PhotosServiceTest {
         Assertions.assertAll(() -> {
             Assertions.assertEquals("description", photo.getDescription());
             Assertions.assertEquals("title", photo.getTitle());
-            Assertions.assertEquals("/images/thumbnail-test.jpeg", photo.getThumbnailUrl());
-            Assertions.assertEquals("/images/test.jpeg", photo.getFullPictureUrl());
+            Assertions.assertEquals("/images/" + photo.getUuid().toString() + "/thumbnail-test.jpeg", photo.getThumbnailUrl());
+            Assertions.assertEquals("/images/" + photo.getUuid()  + "/test.jpeg", photo.getFullPictureUrl());
         });
     }
 
@@ -94,6 +94,23 @@ class PhotosServiceTest {
             Assertions.assertEquals("description", photoFile.getDescription());
             Assertions.assertEquals("title", photoFile.getTitle());
             Assertions.assertEquals("/images/image.jpeg", photoFile.getFullPictureUrl());
+        });
+    }
+
+    @Test
+    void shouldThrowExceptionWhenFileDoesNotExist() {
+
+        String uuid = UUID.randomUUID().toString();
+        Photo photo = new Photo();
+        photo.setTitle("title");
+        photo.setUuid(UUID.fromString(uuid));
+        photo.setDescription("description");
+        photo.setThumbnailUrl("/images/not-exist-image.jpeg");
+        photo.setFullPictureUrl("/images/not-exist.jpeg");
+        springDataPhotoRepository.save(photo);
+
+        Assertions.assertThrows(PhotoFileNotFoundException.class, () -> {
+            photosService.deletePhoto(uuid);
         });
     }
 
