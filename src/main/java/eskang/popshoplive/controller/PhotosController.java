@@ -31,6 +31,7 @@ public class PhotosController {
     }
 
     @PostMapping("/photos")
+    @ResponseStatus(HttpStatus.CREATED)
     void uploadPhoto(
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("title") String title,

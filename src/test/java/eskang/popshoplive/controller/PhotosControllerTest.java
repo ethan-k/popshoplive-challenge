@@ -69,7 +69,7 @@ class PhotosControllerTest {
                         .file(multipartFile)
                         .param("title", "title")
                         .param("description", "description"))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         verify(this.service).uploadPhoto(multipartFile, "title", "description");
     }
