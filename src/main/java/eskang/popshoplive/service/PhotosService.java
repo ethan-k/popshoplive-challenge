@@ -1,6 +1,7 @@
 package eskang.popshoplive.service;
 
 import eskang.popshoplive.PopshopConfiguration;
+import eskang.popshoplive.controller.dto.PhotoDTO;
 import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.repository.PhotoRepository;
@@ -127,5 +128,21 @@ public class PhotosService {
         thumbnailFile.delete();
 
         photoRepository.deleteByUuid(uuid);
+    }
+
+    @Transactional
+    public PhotoDTO updatePhoto(String uuid, String title, String description) {
+        Photo photo = photoRepository.getPhotoByUuid(uuid);
+        if (photo == null)
+            throw new PhotoFileException("Photo does not exist");
+
+        photo = photoRepository.save(photo);
+        PhotoDTO photoDTO = new PhotoDTO();
+        photoDTO.setUuid(photo.getUuid().toString());
+        photoDTO.setDescription(description);
+        photoDTO.setTitle(title);
+        photoDTO.setThumbnailUrl(photo.getThumbnailUrl());
+        photoDTO.setFullPictureUrl(photo.getFullPictureUrl());
+        return photoDTO;
     }
 }

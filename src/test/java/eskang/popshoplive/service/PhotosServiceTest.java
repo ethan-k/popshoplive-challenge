@@ -1,5 +1,6 @@
 package eskang.popshoplive.service;
 
+import eskang.popshoplive.controller.dto.PhotoDTO;
 import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.repository.infra.SpringDataPhotoRepository;
@@ -111,6 +112,25 @@ class PhotosServiceTest {
 
         Assertions.assertThrows(PhotoFileNotFoundException.class, () -> {
             photosService.deletePhoto(uuid);
+        });
+    }
+
+    @Test
+    void updatePhotoInfo() {
+        String uuid = UUID.randomUUID().toString();
+        Photo photo = new Photo();
+        photo.setTitle("title");
+        photo.setUuid(UUID.fromString(uuid));
+        photo.setDescription("description");
+        photo.setThumbnailUrl("/images/not-exist-image.jpeg");
+        photo.setFullPictureUrl("/images/not-exist.jpeg");
+        springDataPhotoRepository.save(photo);
+
+        PhotoDTO photoDTO = photosService.updatePhoto(uuid, "updated title", "updated description");
+
+        Assertions.assertAll(() -> {
+            Assertions.assertEquals("updated title" , photoDTO.getTitle());
+            Assertions.assertEquals("updated description" , photoDTO.getDescription());
         });
     }
 

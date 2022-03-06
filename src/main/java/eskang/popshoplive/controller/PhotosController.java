@@ -1,5 +1,6 @@
 package eskang.popshoplive.controller;
 
+import eskang.popshoplive.controller.dto.PhotoDTO;
 import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.service.PhotosService;
@@ -55,5 +56,14 @@ public class PhotosController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteImage(@PathVariable String uuid) {
         photosService.deletePhoto(uuid);
+    }
+
+    @PutMapping("/photos/{uuid}")
+    public HttpResponseDTO<PhotoDTO> updatePhoto(
+            @PathVariable String uuid,
+            @RequestParam("title") String title,
+            @RequestParam("description") String description
+    ) {
+        return new HttpResponseDTO<>(photosService.updatePhoto(uuid, title, description));
     }
 }

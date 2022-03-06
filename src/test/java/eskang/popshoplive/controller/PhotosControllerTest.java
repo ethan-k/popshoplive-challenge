@@ -2,6 +2,7 @@ package eskang.popshoplive.controller;
 
 import eskang.popshoplive.PopshopConfiguration;
 import eskang.popshoplive.PopshopliveApplication;
+import eskang.popshoplive.controller.dto.PhotoDTO;
 import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.service.PhotosService;
@@ -19,8 +20,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -91,6 +91,31 @@ class PhotosControllerTest {
 
         this.mockMvc.perform(get("/photos/" + uuid))
                 .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(expected));
+    }
+
+    @Test
+    void updatePhotoInfo() throws Exception {
+        String uuid = "cb5666bc-9cf3-11ec-b909-0242ac120002";
+        when(service.updatePhoto(uuid, "updated title", "updated description"))
+                .thenReturn(
+                new PhotoDTO(
+                        uuid,
+                        "Photo title",
+                        "Photo description",
+                        "/photos/" + uuid + "-thumbnail.jpg",
+                        "/photos/" + uuid + ".jpg"
+                )
+        );
+
+        String expected = "{\"data\":{\"uuid\":\"cb5666bc-9cf3-11ec-b909-0242ac120002\",\"title\":\"Photo title\",\"description\":\"Photo description\",\"fullPictureUrl\":\"/photos/cb5666bc-9cf3-11ec-b909-0242ac120002-thumbnail.jpg\"}}";
+
+        this.mockMvc.perform(
+                put("/photos/" + uuid)
+                        .param("title", "updated title")
+                        .param("description", "updated description")
+                ).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(expected));
     }
