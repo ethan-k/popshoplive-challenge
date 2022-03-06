@@ -7,4 +7,5 @@ import java.util.List;
 public interface PhotoRepository {
     List<Photo> getPhotos();
     Photo save(Photo photo);
+    Photo getPhotoByUuid(String uuid);
 }

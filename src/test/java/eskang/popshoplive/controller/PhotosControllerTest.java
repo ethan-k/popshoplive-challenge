@@ -2,6 +2,7 @@ package eskang.popshoplive.controller;
 
 import eskang.popshoplive.PopshopConfiguration;
 import eskang.popshoplive.PopshopliveApplication;
+import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.service.PhotosService;
 import org.junit.jupiter.api.Test;
@@ -71,6 +72,27 @@ class PhotosControllerTest {
                 .andExpect(status().isOk());
 
         verify(this.service).uploadPhoto(multipartFile, "title", "description");
+    }
+
+    @Test
+    void getPhotoInfo() throws Exception {
+
+        String uuid = "cb5666bc-9cf3-11ec-b909-0242ac120002";
+        when(service.getPhoto(uuid)).thenReturn(
+                new PhotoItemDTO(
+                        uuid,
+                        "Photo title",
+                        "Photo description",
+                        "/photos/" + uuid + "-thumbnail.jpg"
+                )
+        );
+
+        String expected = "{\"data\":{\"uuid\":\"cb5666bc-9cf3-11ec-b909-0242ac120002\",\"title\":\"Photo title\",\"description\":\"Photo description\",\"fullPictureUrl\":\"/photos/cb5666bc-9cf3-11ec-b909-0242ac120002-thumbnail.jpg\"}}";
+
+        this.mockMvc.perform(get("/photos/" + uuid))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(expected));
     }
 
 }

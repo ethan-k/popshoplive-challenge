@@ -97,4 +97,15 @@ public class PhotosService {
             throw new PhotoFileNotFoundException("Could not read photo file: " + filename, e);
         }
     }
+
+    public PhotoItemDTO getPhoto(String uuid) {
+        Photo photo = photoRepository.getPhotoByUuid(uuid);
+        PhotoItemDTO photoItemDTO = new PhotoItemDTO(
+                photo.getUuid().toString(),
+                photo.getTitle(),
+                photo.getDescription(),
+                photo.getFullPictureUrl()
+        );
+        return photoItemDTO;
+    }
 }

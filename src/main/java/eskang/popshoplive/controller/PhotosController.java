@@ -42,4 +42,10 @@ public class PhotosController {
         Resource file = photosService.getPhotoFile(photoname);
         StreamUtils.copy(file.getInputStream(), response.getOutputStream());
     }
+
+    @GetMapping("/photos/{uuid}")
+    @ResponseBody
+    public HttpResponseDTO<PhotoItemDTO> getImageInfo(@PathVariable String uuid) {
+        return new HttpResponseDTO<>(photosService.getPhoto(uuid));
+    }
 }

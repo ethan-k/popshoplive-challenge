@@ -1,5 +1,6 @@
 package eskang.popshoplive.service;
 
+import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.repository.infra.SpringDataPhotoRepository;
 import eskang.popshoplive.repository.model.Photo;
@@ -73,6 +74,29 @@ class PhotosServiceTest {
             Assertions.assertEquals("test-image.jpg", photoFile.getFilename());
         });
     }
+
+    @Test
+    void getPhoto() {
+        String uuid = "f900b4f4-2522-44dd-8b75-c96864d7228b";
+        Photo photo = new Photo();
+        photo.setTitle("title");
+        photo.setUuid(UUID.fromString(uuid));
+        photo.setDescription("description");
+        photo.setThumbnailUrl("/images/thumbnail-image.jpeg");
+        photo.setFullPictureUrl("/images/image.jpeg");
+
+        springDataPhotoRepository.save(photo);
+
+        PhotoItemDTO photoFile = photosService.getPhoto(uuid);
+
+        Assertions.assertAll(() -> {
+            Assertions.assertEquals("f900b4f4-2522-44dd-8b75-c96864d7228b", photoFile.getUuid());
+            Assertions.assertEquals("description", photoFile.getDescription());
+            Assertions.assertEquals("title", photoFile.getTitle());
+            Assertions.assertEquals("/images/image.jpeg", photoFile.getFullPictureUrl());
+        });
+    }
+
 
     @AfterEach
     void cleanup() {
