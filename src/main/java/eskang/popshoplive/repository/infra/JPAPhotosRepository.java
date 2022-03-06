@@ -19,4 +19,9 @@ public class JPAPhotosRepository implements PhotoRepository {
     public List<Photo> getPhotos() {
         return springDataPhotoRepository.findAll();
     }
+
+    @Override
+    public Photo save(Photo photo) {
+        return this.springDataPhotoRepository.save(photo);
+    }
 }

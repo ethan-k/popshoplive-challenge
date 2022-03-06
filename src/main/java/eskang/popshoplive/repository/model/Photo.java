@@ -1,8 +1,6 @@
 package eskang.popshoplive.repository.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,5 +19,5 @@ public class Photo {
     private String title;
     private String description;
     private String thumbnailUrl;
-    private String url;
+    private String fullPictureUrl;
 }
