@@ -1,18 +1,19 @@
 package eskang.popshoplive.controller;
 
+import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.service.PhotosService;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.core.io.Resource;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/photos")
 public class PhotosController {
 
     private final PhotosService photosService;
@@ -21,12 +22,12 @@ public class PhotosController {
         this.photosService = photosService;
     }
 
-    @GetMapping
+    @GetMapping("/photos")
     HttpResponseDTO<List<PhotoListDTO>> photos() {
         return new HttpResponseDTO<>(photosService.getPhotos());
     }
 
-    @PostMapping
+    @PostMapping("/photos")
     void uploadPhoto(
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("title") String title,
@@ -35,4 +36,10 @@ public class PhotosController {
         this.photosService.uploadPhoto(photo, title, description);
     }
 
+    @GetMapping("/images/{photoname:.+}")
+    @ResponseBody
+    public void serveFile(@PathVariable String photoname, HttpServletResponse response) throws IOException {
+        Resource file = photosService.getPhotoFile(photoname);
+        StreamUtils.copy(file.getInputStream(), response.getOutputStream());
+    }
 }

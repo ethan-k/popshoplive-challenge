@@ -1,6 +1,7 @@
 package eskang.popshoplive.service;
 
 import eskang.popshoplive.PopshopConfiguration;
+import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.repository.PhotoRepository;
 import eskang.popshoplive.repository.model.Photo;
@@ -77,6 +78,23 @@ public class PhotosService {
             photoRepository.save(photo);
         } catch (IOException e) {
             throw new PhotoFileException("Failed to store file.", e);
+        }
+    }
+
+    public Resource getPhotoFile(String filename) {
+        try {
+            Path file = Paths.get(this.popshopConfiguration.getFileUploadFolderPath()).resolve(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            }
+            else {
+                throw new PhotoFileNotFoundException("Could not read photo file: " + filename);
+
+            }
+        }
+        catch (MalformedURLException e) {
+            throw new PhotoFileNotFoundException("Could not read photo file: " + filename, e);
         }
     }
 }

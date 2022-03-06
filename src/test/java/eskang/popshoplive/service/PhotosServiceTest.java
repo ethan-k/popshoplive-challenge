@@ -1,8 +1,6 @@
 package eskang.popshoplive.service;
 
-import eskang.popshoplive.PopshopliveApplication;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
-import eskang.popshoplive.repository.PhotoRepository;
 import eskang.popshoplive.repository.infra.SpringDataPhotoRepository;
 import eskang.popshoplive.repository.model.Photo;
 import org.junit.jupiter.api.AfterEach;
@@ -10,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
@@ -64,6 +63,14 @@ class PhotosServiceTest {
             Assertions.assertEquals("title", photo.getTitle());
             Assertions.assertEquals("/images/thumbnail-test.jpeg", photo.getThumbnailUrl());
             Assertions.assertEquals("/images/test.jpeg", photo.getFullPictureUrl());
+        });
+    }
+
+    @Test
+    void getFile() {
+        Resource photoFile = photosService.getPhotoFile("test-image.jpg");
+        Assertions.assertAll(() -> {
+            Assertions.assertEquals("test-image.jpg", photoFile.getFilename());
         });
     }
 
