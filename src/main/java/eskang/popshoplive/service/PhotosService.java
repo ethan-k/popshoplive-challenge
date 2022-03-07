@@ -67,7 +67,9 @@ public class PhotosService {
                 originalFile.getParent().toFile().mkdirs();
                 Files.copy(inputStream, originalFile,
                         StandardCopyOption.REPLACE_EXISTING);
+            }
 
+            try (InputStream inputStream = photoFile.getInputStream()) {
                 // For the sake of assignment, we don't do resizing of a thumbnail image
                 thumbNameFile.getParent().toFile().mkdirs();
                 Files.copy(inputStream, thumbNameFile,
@@ -95,7 +97,6 @@ public class PhotosService {
             }
             else {
                 throw new PhotoFileNotFoundException("Could not read photo file: " + filename);
-
             }
         }
         catch (MalformedURLException e) {
