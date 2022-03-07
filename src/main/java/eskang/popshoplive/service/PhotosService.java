@@ -88,9 +88,9 @@ public class PhotosService {
         }
     }
 
-    public Resource getPhotoFile(String filename) {
+    public Resource getPhotoFile(String uuid, String filename) {
         try {
-            Path file = Paths.get(this.popshopConfiguration.getFileUploadFolderPath()).resolve(filename);
+            Path file = Paths.get(this.popshopConfiguration.getFileUploadFolderPath()).resolve(Paths.get(uuid, filename));
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
                 return resource;

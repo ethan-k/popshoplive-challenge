@@ -5,7 +5,6 @@ import eskang.popshoplive.controller.dto.PhotoItemDTO;
 import eskang.popshoplive.controller.dto.PhotoListDTO;
 import eskang.popshoplive.service.PhotosService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,10 +39,9 @@ public class PhotosController {
         this.photosService.uploadPhoto(photo, title, description);
     }
 
-    @GetMapping("/images/{photoname:.+}")
-    @ResponseBody
-    public void serveFile(@PathVariable String photoname, HttpServletResponse response) throws IOException {
-        Resource file = photosService.getPhotoFile(photoname);
+    @GetMapping("/images/{uuid}/{photoname:.+}")
+    public void serveFile(@PathVariable("uuid") String uuid, @PathVariable("photoname") String photoname, HttpServletResponse response) throws IOException {
+        Resource file = photosService.getPhotoFile(uuid, photoname);
         StreamUtils.copy(file.getInputStream(), response.getOutputStream());
     }
 

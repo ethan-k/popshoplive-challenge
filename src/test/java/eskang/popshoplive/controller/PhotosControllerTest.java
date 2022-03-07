@@ -61,7 +61,8 @@ class PhotosControllerTest {
 
     @Test
     public void shouldSavePhotoFile() throws Exception {
-        URL resource = this.getClass().getResource("/images/test-image.jpg");
+        String uuid = "f900b4f4-2522-44dd-8b75-c96864d7228b";
+        URL resource = this.getClass().getResource("/images/" + uuid + "/test-image.jpg");
         MockMultipartFile multipartFile = new MockMultipartFile("photo", "test.jpeg",
                 MediaType.MULTIPART_FORM_DATA_VALUE, resource.getFile().getBytes());
 

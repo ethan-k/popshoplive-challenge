@@ -52,9 +52,10 @@ class PhotosServiceTest {
 
     @Test
     void savePhoto() {
+        String uuid = "f900b4f4-2522-44dd-8b75-c96864d7228b";
         MockMultipartFile multipartFile = new MockMultipartFile("photo", "test.jpeg",
                 MediaType.MULTIPART_FORM_DATA_VALUE,
-                this.getClass().getResource("/images/test-image.jpg").getFile().getBytes());
+                this.getClass().getResource("/images/" + uuid + "/test-image.jpg").getFile().getBytes());
 
         photosService.uploadPhoto(multipartFile, "title", "description");
 
@@ -70,7 +71,7 @@ class PhotosServiceTest {
 
     @Test
     void getFile() {
-        Resource photoFile = photosService.getPhotoFile("test-image.jpg");
+        Resource photoFile = photosService.getPhotoFile("f900b4f4-2522-44dd-8b75-c96864d7228b", "test-image.jpg");
         Assertions.assertAll(() -> {
             Assertions.assertEquals("test-image.jpg", photoFile.getFilename());
         });
